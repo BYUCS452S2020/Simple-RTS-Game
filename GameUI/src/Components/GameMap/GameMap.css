@@ -1,0 +1,12 @@
+.map {
+  width: 200vw;
+  height: 200vh;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.map-container {
+
+}
