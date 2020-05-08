@@ -24,11 +24,53 @@ class Map extends React.Component {
     var xmovement = 0;
     var ymovement = 0;
 
-    if(e.clientX >= rightBoundary || e.clientX <= leftBoundary || e.clientY >= bottomBoundary || e.clientY <= topBoundary) {
+    var movingRight = e.clientX >= rightBoundary
+    var movingLeft = e.clientX <= leftBoundary
+    var movingDown = e.clientY >= bottomBoundary
+    var movingUp = e.clientY <= topBoundary
+
+    var boundaryHit = false
+
+    if(movingUp) {
+      boundaryHit = true
+      if(movingRight) {
+        document.body.style.cursor = "ne-resize"
+      }
+      else if(movingLeft) {
+        document.body.style.cursor = "nw-resize"
+      }
+      else {
+        document.body.style.cursor = "n-resize"
+      }
+    }
+    else if(movingDown) {
+      boundaryHit = true
+      if(movingRight) {
+        document.body.style.cursor = "se-resize"
+      }
+      else if(movingLeft) {
+        document.body.style.cursor = "sw-resize"
+      }
+      else {
+        document.body.style.cursor = "s-resize"
+      }
+    }
+    else if(movingRight) {
+      boundaryHit = true
+      document.body.style.cursor = "e-resize"
+    }
+    else if(movingLeft) {
+      boundaryHit = true
+      document.body.style.cursor = "w-resize"
+    }
+
+    if(boundaryHit) {
       xmovement = (e.clientX * (50/259)) - (28800/259)
       ymovement = (e.clientY * (50/97)) - (20300/97)
-
-      window.scrollBy(xmovement, ymovement);
+      window.scrollBy(xmovement, ymovement)
+    }
+    else {
+      document.body.style.cursor = "default"
     }
   }
 
