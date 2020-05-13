@@ -9,13 +9,15 @@ class MapRenderer extends React.Component {
     }
   }
   componentDidMount() {
-    fetch('Assets/Maps/Level1.json').then(resp => {
-      resp.json().then(json => {
-        this.map = json;
-        this.tiles = this.getTilesFromMap(this.map);
-        this.renderLayers(this.map.layers);
-      })
-    });
+    this.load("http://localhost:4000/maps/1");
+  }
+  load = (url) => {
+    fetch(url)
+      .then(response => response.text())
+      .then(text => { console.log(text); })
+      .catch(error => { // handle error });
+        this.setState({ loading: false });
+      });
   }
 
   getTilesFromMap = (m) => {
@@ -85,6 +87,7 @@ class MapRenderer extends React.Component {
   }
 
   render() {
+    if (this.state.loading) { return <div>Loading...</div> }
     if (!this.props.map) { return <div>Map not provided</div> }
     return (
       <div style={{ position: "relative" }}>
