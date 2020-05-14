@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 // import Footer from './Components/GameFooter/Footer';
 // import Map from './Components/GameMap/Map';
-import MapRenderer from './Components/GameMap/MapRenderer';
+import Game from './Game/Game';
 
 
 function App() {
@@ -10,7 +10,7 @@ function App() {
     <div className="App">
       {/*<Map/>
       <Footer/>*/}
-      <MapRenderer map="Level1" />
+      <Game />
     </div>
   );
 }
