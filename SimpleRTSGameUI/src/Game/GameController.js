@@ -34,7 +34,7 @@ class GameController extends React.Component {
       img.src = 'http://localhost:4000/' + tile.image;
       console.log("drawing image", img.src, tile.imagewidth, tile.imageheight);
       img.onload = function() {
-        canvas.drawImage(img, 0, 0, tile.imagewidth, tile.imageheight, 0, 0, 1, 1);
+        canvas.drawImage(img, 0, 0, tile.imagewidth, tile.imageheight);
       }
     }
   }
