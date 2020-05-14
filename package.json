@@ -1,7 +1,7 @@
 {
   "name": "Simple-RTS-Game",
   "version": "0.1.0",
-  "description": "Simple RTS Game for our CS 352 class",
+  "description": "Simple RTS Game for our CS 452 class",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "server": "cd Server && node index.js",
