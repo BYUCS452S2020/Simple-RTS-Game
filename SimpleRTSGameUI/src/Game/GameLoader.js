@@ -52,7 +52,7 @@ class GameLoader extends React.Component {
     else {
       const { map, tiles } = this.state;
       return (
-        <div style={{ position: "relative" }}>
+        <div style={{ position: "relative", height: (map.height * map.tileheight), paddingBottom: "20vh" }}>
           <GameController Map={map} Tiles={tiles}/>
           <canvas
             id="Background"
