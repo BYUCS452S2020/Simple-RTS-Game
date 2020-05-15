@@ -54,8 +54,18 @@ class GameLoader extends React.Component {
       return (
         <div style={{ position: "relative" }}>
           <GameController Map={map} Tiles={tiles}/>
-          <canvas id="Background" height="4096" width="4096" style={{ zIndex: 0 }}></canvas>
-          <canvas id="Foreground" height="4096" width="4096" style={{ zIndex: 1 }}></canvas>
+          <canvas
+            id="Background"
+            height={map.height * map.tileheight}
+            width={map.width * map.tilewidth}
+            style={{ zIndex: 0 }} >
+          </canvas>
+          <canvas
+            id="Foreground"
+            height={map.height * map.tileheight}
+            width={map.width * map.tilewidth}
+            style={{ zIndex: 100 }}>
+          </canvas>
         </div>
       );
     }

@@ -9,6 +9,8 @@ class GameController extends React.Component {
       tiles: props.Tiles,
       initialized: false,
     }
+    this.mapWidth = props.Map.width * props.Map.tilewidth;
+    this.mapHeight = props.Map.height * props.Map.tileheight;
   }
 
   componentDidMount() {
@@ -19,6 +21,16 @@ class GameController extends React.Component {
     this.renderLayers(this.state.map.layers);
   }
 
+  getPosXFromIndex = (i) => {
+    const { tilewidth, width } = this.state.map;
+    return (i * tilewidth) % (tilewidth * width)
+  }
+
+  getPosYFromIndex = (i) => {
+    const { tileheight, width } = this.state.map;
+    return Math.floor(i / width) * tileheight;
+  }
+
   renderLayers = (layers) => {
     if (layers) {
       layers.forEach(this.renderLayer);
@@ -27,14 +39,24 @@ class GameController extends React.Component {
 
   renderLayer = (layer) => {
     let canvas = document.getElementById(layer.name).getContext("2d");
-    if (layer.data[0] !== 0) {
-      let id = layer.data[0] - 1;
-      let tile = this.state.tiles[id];
-      let img = new Image();
-      img.src = 'http://localhost:4000/' + tile.image;
-      console.log("drawing image", img.src, tile.imagewidth, tile.imageheight);
-      img.onload = function() {
-        canvas.drawImage(img, 0, 0, tile.imagewidth, tile.imageheight);
+    for (let i = 0; i < layer.data.length; i++) {
+      if (layer.data[i] !== 0) {
+        let id = layer.data[i] - 1;
+        let tile = this.state.tiles[id];
+        let x = this.getPosXFromIndex(i);
+        let y = this.getPosYFromIndex(i);
+        let img = new Image();
+        img.src = 'http://localhost:4000/' + tile.image;
+        console.log("drawing", img.src);
+        img.onload = function() {
+          canvas.drawImage(
+            img,
+            x,
+            y,
+            tile.imagewidth,
+            tile.imageheight
+          );
+        }
       }
     }
   }
