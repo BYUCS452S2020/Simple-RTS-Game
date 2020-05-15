@@ -31,7 +31,6 @@ class Map extends React.Component {
     var xmovement = 0;
     var ymovement = 0;
 
-    console.log("I got called");
     var movingRight = e.clientX >= rightBoundary
     var movingLeft = e.clientX <= leftBoundary
     var movingDown = e.clientY >= bottomBoundary

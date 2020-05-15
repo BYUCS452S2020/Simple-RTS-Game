@@ -47,7 +47,6 @@ class GameController extends React.Component {
         let y = this.getPosYFromIndex(i);
         let img = new Image();
         img.src = 'http://localhost:4000/' + tile.image;
-        console.log("drawing", img.src);
         img.onload = function() {
           canvas.drawImage(
             img,

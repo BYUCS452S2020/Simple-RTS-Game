@@ -8,10 +8,16 @@ html {
 }
 
 .map-container {
-  
+
 }
 
 .footer-spacer {
   width: 80vw;
   height: 20vh;
+}
+
+canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
 }
