@@ -1,0 +1,23 @@
+{
+  "name": "Simple-RTS-Game",
+  "version": "0.1.0",
+  "description": "Simple RTS Game for our CS 452 class",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "cd Server && node index.js",
+    "client": "cd SimpleRTSGameUI && npm start",
+    "ui": "cd SimpleRTSGameUI && npm start",
+    "start": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BYUCS452S2020/Simple-RTS-Game.git"
+  },
+  "keywords": ["real time strategy", "strategy", "game", "simple", "react", "tiled"],
+  "author": "Norberto Martinez, Michael Black, and Jacob Walker",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BYUCS452S2020/Simple-RTS-Game/issues"
+  },
+  "homepage": "https://github.com/BYUCS452S2020/Simple-RTS-Game#readme"
+}

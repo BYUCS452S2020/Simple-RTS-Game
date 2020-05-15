@@ -55,7 +55,7 @@ class PillageCaptainPortrait extends React.Component {
   render() {
     return (
       <div className='portrait-container'>
-        <img src={this.state.currentPortrait} className='portrait' />
+        <img src={this.state.currentPortrait} className='portrait' alt="avatar" />
       </div>
     )
   }

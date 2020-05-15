@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import GameLoader from '../../Game/GameLoader'
 import './GameMap.css';
 
 class Map extends React.Component {
@@ -13,13 +14,19 @@ class Map extends React.Component {
       scrollX: 0,
       scrollY: 0
     };
+
+    this.mouseMove = this.mouseMove.bind(this);
   }
 
-  onMouseMove = e => {
+  componentDidMount() {
+    window.addEventListener("mousemove", this.mouseMove);
+  }
+
+  mouseMove = e => {
 
     var rightBoundary = window.innerWidth * .95
     var leftBoundary = 50
-    var bottomBoundary =  (window.innerHeight * .74)
+    var bottomBoundary =  (window.innerHeight * .97)
     var topBoundary = 50
     var xmovement = 0;
     var ymovement = 0;
@@ -79,17 +86,17 @@ class Map extends React.Component {
     return (
       <div
         ref={ref}
-        onMouseMove={this.onMouseMove}
         className={rootClass}>
-        <img id="map" ref={this.ref}  className="map" src="https://bnetcmsus-a.akamaihd.net/cms/gallery/TQWOWDJLTULR1500412537725.jpg"/>
+        <GameLoader/>
       </div>
+
     )
   }
 }
 
 Map.defaultProps = {
   ref: { current: { } },
-  rootClass: '',
+  rootClass: 'map-container',
 };
 
 Map.propTypes = {
