@@ -1,7 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import GameLoader from '../../Game/GameLoader'
+import GameLoader from '../../Game/GameLoader';
 import './GameMap.css';
+import '../../JqueryPlugins/jquery.event.drag-2.2.js'
+import '../../JqueryPlugins/jquery.event.drag.live-2.2.js'
+import $ from 'jquery';
+import jQuery from 'jquery'
 
 class Map extends React.Component {
   constructor(props) {
@@ -18,8 +22,48 @@ class Map extends React.Component {
     this.mouseMove = this.mouseMove.bind(this);
   }
 
+  // <script src="./JqueryPlugins/jquery.event.drag-2.2.js" type="text/javascript"></script>
+  // <script src="./JqueryPlugins/jquery.event.drag.live-2.2.js" type="text/javascript"></script>
+  // <script src="./JqueryPlugins/jquery.event.drop-2.2.js" type="text/javascript"></script>
+  // <script src="./JqueryPlugins/jquery.event.drop.live-2.2.js" type="text/javascript"></script>
+
   componentDidMount() {
     window.addEventListener("mousemove", this.mouseMove);
+    // const jQueryScript = document.createElement("script");
+    // jQueryScript.src = "http://threedubmedia.com/inc/js/jquery-1.7.2.js";
+    // jQueryScript.async = true;
+    // const dragScript = document.createElement("script");
+    // dragScript.src = "../../../public/JqueryPlugins/jquery.event.drag-2.2.js";
+    // dragScript.type = "text/javascript"
+    // dragScript.async = true;
+    // const dragLiveScript = document.createElement("script");
+    // dragLiveScript.src = "../../../public/JqueryPlugins/jquery.event.drag.live-2.2.js";
+    // dragLiveScript.type = "text/javascript"
+    // dragLiveScript.async = true;
+    //document.body.appendChild(jQueryScript);
+    // document.body.appendChild(dragScript);
+    // document.body.appendChild(dragLiveScript);
+    jQuery(function($){
+      $( document )
+        .drag("start",function( ev, dd ){
+          return $('<div class="selection-box" />')
+            .css('opacity', .30 )
+            .appendTo( document.body );
+        })
+        .drag(function( ev, dd ){
+          $( dd.proxy ).css({
+            top: Math.min( ev.pageY, dd.startY ),
+            left: Math.min( ev.pageX, dd.startX ),
+            height: Math.abs( ev.pageY - dd.startY ),
+            width: Math.abs( ev.pageX - dd.startX )
+          });
+        })
+        .drag("end",function( ev, dd ){
+          console.log("dd",dd);
+          console.log("ev",ev);
+          $( dd.proxy ).remove();
+        });
+    });
   }
 
   mouseMove = e => {

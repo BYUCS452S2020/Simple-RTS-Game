@@ -27,11 +27,15 @@
     -->
     <title>React App</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js"></script>
+    <script src="http://threedubmedia.com/inc/js/jquery-1.7.2.js"></script>
+    <script src="./JqueryPlugins/jquery.event.drag-2.2.js" type="text/javascript"></script>
+    <script src="./JqueryPlugins/jquery.event.drag.live-2.2.js" type="text/javascript"></script>
+    <script src="./JqueryPlugins/jquery.event.drop-2.2.js" type="text/javascript"></script>
+    <script src="./JqueryPlugins/jquery.event.drop.live-2.2.js" type="text/javascript"></script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
@@ -42,5 +46,46 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <script type="text/javascript">
+      jQuery(function($){
+      	$( document )
+      		.drag("start",function( ev, dd ){
+      			return $('<div class="selection-box" />')
+      				.css('opacity', .30 )
+      				.appendTo( document.body );
+      		})
+      		.drag(function( ev, dd ){
+      			$( dd.proxy ).css({
+      				top: Math.min( ev.pageY, dd.startY ),
+      				left: Math.min( ev.pageX, dd.startX ),
+      				height: Math.abs( ev.pageY - dd.startY ),
+      				width: Math.abs( ev.pageX - dd.startX )
+      			});
+      		})
+      		.drag("end",function( ev, dd ){
+            console.log("dd",dd);
+            console.log("ev",ev);
+      			$( dd.proxy ).remove();
+      		});
+      });
+    </script>
+    <div id="root"></div>
+    <style type="text/css">
+      .selection-box {
+      	position: absolute;
+      	background-color: #00FF00;
+        border: 2px solid;
+      	border-color: #006400;
+        z-index: 101;
+      }
+      .size2 {
+      	height: 118px;
+      	line-height: 118px;
+      }
+      .size3 {
+      	height: 178px;
+      	line-height: 178px;
+      }
+    </style>
   </body>
 </html>
