@@ -23,7 +23,7 @@ class Map extends React.Component {
   }
 
   mouseMove = e => {
-
+    e.preventDefault();
     var rightBoundary = window.innerWidth * .95
     var leftBoundary = 50
     var bottomBoundary =  (window.innerHeight * .97)

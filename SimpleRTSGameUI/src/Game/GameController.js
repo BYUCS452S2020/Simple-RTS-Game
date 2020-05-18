@@ -20,20 +20,6 @@ const getTileTypeFromId = (id) => {
   }
 }
 
-const reCalc = () => {
-  let div = document.getElementById('selector');
-  let x3 = Math.min(x1,x2);
-  let x4 = Math.max(x1,x2);
-  let y3 = Math.min(y1,y2);
-  let y4 = Math.max(y1,y2);
-  div.style.left = x3 + 'px';
-  div.style.top = y3 + 'px';
-  div.style.width = x4 - x3 + 'px';
-  div.style.height = y4 - y3 + 'px';
-}
-
-var x1 = 0, y1 = 0, x2 = 0, y2 = 0;
-
 class GameController extends React.Component {
   constructor(props) {
     super(props);
@@ -45,7 +31,14 @@ class GameController extends React.Component {
     this.mapWidth = props.Map.width * props.Map.tilewidth;
     this.mapHeight = props.Map.height * props.Map.tileheight;
     this.army = new Army();
-    // this.reCalc = this.reCalc.bind(this);
+    this.x1 = 0;
+    this.y1 = 0;
+    this.x2 = 0;
+    this.y2 = 0;
+    this.reCalc = this.reCalc.bind(this);
+    this.onMouseUp = this.onMouseUp.bind(this);
+    this.onMouseDown = this.onMouseDown.bind(this);
+    this.onMouseMove = this.onMouseMove.bind(this);
   }
 
   componentDidMount() {
@@ -63,6 +56,7 @@ class GameController extends React.Component {
     // let ctx = canvas.getContext('2d');
 
     canvas.addEventListener('click', (event) => {
+      event.preventDefault();
       this.army.onClick(event.layerX, event.layerY);
     });
     canvas.addEventListener('contextmenu', (event) => {
@@ -70,24 +64,42 @@ class GameController extends React.Component {
       this.army.onRightClick(event.layerX, event.layerY);
     });
     canvas.addEventListener('mousedown', this.onMouseDown);
-    canvas.addEventListener('mouseup', this.onMouseUp);
+    window.addEventListener('mouseup', this.onMouseUp);
     canvas.addEventListener('mousemove', this.onMouseMove);
   }
 
+
+  reCalc = function() {
+    let div = document.getElementById('selector');
+    let x3 = Math.min(this.x1,this.x2);
+    let x4 = Math.max(this.x1,this.x2);
+    let y3 = Math.min(this.y1,this.y2);
+    let y4 = Math.max(this.y1,this.y2);
+    div.style.left = x3 + 'px';
+    div.style.top = y3 + 'px';
+    div.style.width = x4 - x3 + 'px';
+    div.style.height = y4 - y3 + 'px';
+  }
+
+
   onMouseDown = function(e) {
     console.log("down");
+    e.preventDefault();
     let div = document.getElementById('selector');
     div.hidden = false;
-    x1 = e.clientX;
-    y1 = e.clientY;
-    reCalc();
+    this.x1 = e.clientX + window.pageXOffset;
+    this.y1 = e.clientY + window.pageYOffset;;
+    this.reCalc();
   };
   onMouseMove = function(e) {
-    x2 = e.clientX;
-    y2 = e.clientY;
-    reCalc();
+    console.log("move");
+    e.preventDefault();
+    this.x2 = e.clientX + window.pageXOffset;;
+    this.y2 = e.clientY + window.pageYOffset; ;
+    this.reCalc();
   };
   onMouseUp = function(e) {
+    console.log("up");
     let div = document.getElementById('selector');
     div.hidden = true;
   };
@@ -148,7 +160,7 @@ class GameController extends React.Component {
     return (
       <div
         id="selector"
-        style={{border: "1px dotted #000", position: "absolute", zIndex: 2}}
+        style={{border: "2px solid #228B22", backgroundColor: "#00FF00", opacity: 0.40, position: "absolute", zIndex: 2}}
         hidden>
       </div>
     );
