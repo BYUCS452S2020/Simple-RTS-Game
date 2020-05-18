@@ -20,6 +20,18 @@ const getTileTypeFromId = (id) => {
   }
 }
 
+const reCalc = () => {
+  let div = document.getElementById('selector');
+  let x3 = Math.min(x1,x2);
+  let x4 = Math.max(x1,x2);
+  let y3 = Math.min(y1,y2);
+  let y4 = Math.max(y1,y2);
+  div.style.left = x3 + 'px';
+  div.style.top = y3 + 'px';
+  div.style.width = x4 - x3 + 'px';
+  div.style.height = y4 - y3 + 'px';
+}
+
 var x1 = 0, y1 = 0, x2 = 0, y2 = 0;
 
 class GameController extends React.Component {
@@ -33,6 +45,7 @@ class GameController extends React.Component {
     this.mapWidth = props.Map.width * props.Map.tilewidth;
     this.mapHeight = props.Map.height * props.Map.tileheight;
     this.army = new Army();
+    // this.reCalc = this.reCalc.bind(this);
   }
 
   componentDidMount() {
@@ -56,35 +69,27 @@ class GameController extends React.Component {
       event.preventDefault();
       this.army.onRightClick(event.layerX, event.layerY);
     });
+    canvas.addEventListener('mousedown', this.onMouseDown);
+    canvas.addEventListener('mouseup', this.onMouseUp);
+    canvas.addEventListener('mousemove', this.onMouseMove);
   }
 
-  reCalc() {
-    let div = document.getElementById('selector');
-    let x3 = Math.min(x1,x2);
-    let x4 = Math.max(x1,x2);
-    let y3 = Math.min(y1,y2);
-    let y4 = Math.max(y1,y2);
-    div.style.left = x3 + 'px';
-    div.style.top = y3 + 'px';
-    div.style.width = x4 - x3 + 'px';
-    div.style.height = y4 - y3 + 'px';
-  }
   onMouseDown = function(e) {
     console.log("down");
     let div = document.getElementById('selector');
-    div.hidden = 0;
+    div.hidden = false;
     x1 = e.clientX;
     y1 = e.clientY;
-    this.reCalc();
+    reCalc();
   };
   onMouseMove = function(e) {
     x2 = e.clientX;
     y2 = e.clientY;
-    this.reCalc();
+    reCalc();
   };
   onMouseUp = function(e) {
     let div = document.getElementById('selector');
-    div.hidden = 1;
+    div.hidden = true;
   };
 
   getPosXFromIndex = (i) => {
@@ -142,11 +147,8 @@ class GameController extends React.Component {
   render() {
     return (
       <div
-        id="slector"
+        id="selector"
         style={{border: "1px dotted #000", position: "absolute", zIndex: 2}}
-        onMouseDown={this.onMouseDown}
-        onMouseMove={this.onMouseMove}
-        onMouseUp={this.onMouseUp}
         hidden>
       </div>
     );
