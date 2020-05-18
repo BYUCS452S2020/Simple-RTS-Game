@@ -52,7 +52,8 @@ class GameLoader extends React.Component {
     else {
       const { map, tiles } = this.state;
       return (
-        <div style={{ position: "relative", height: (map.height * map.tileheight), paddingBottom: "20vh" }}>
+        <div style={{
+          position: "relative", height: (map.height * map.tileheight), paddingBottom: "20vh" }}>
           <GameController Map={map} Tiles={tiles}/>
           <canvas
             id="Background"
@@ -64,7 +65,7 @@ class GameLoader extends React.Component {
             id="Foreground"
             height={map.height * map.tileheight}
             width={map.width * map.tilewidth}
-            style={{ zIndex: 100 }}>
+            style={{ zIndex: 1 }}>
           </canvas>
         </div>
       );
