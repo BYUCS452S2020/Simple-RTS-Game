@@ -81,16 +81,14 @@ class Resources extends React.Component {
   render() {
     return (
       <div className='resources-container'>
-        <div className="resource-row">
-          <div className="resource-column">
-            {this.displayTroops()}
-          </div>
-          <div className="resource-column">
-            {this.displayMaterials()}
-          </div>
-          <div className="resource-column">
-            {this.displayOther()}
-          </div>
+        <div className="resource-column">
+          {this.displayTroops()}
+        </div>
+        <div className="resource-column">
+          {this.displayMaterials()}
+        </div>
+        <div className="resource-column">
+          {this.displayOther()}
         </div>
       </div>
     )

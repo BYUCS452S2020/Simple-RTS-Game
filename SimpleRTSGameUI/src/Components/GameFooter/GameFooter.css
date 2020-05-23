@@ -29,8 +29,7 @@
 
 .resources-container {
   background-image: url('../../resourcesbackground.JPG');
-  background-size: cover
-;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   width: 40vw;
@@ -40,22 +39,25 @@
   border: .3vh  solid cornflowerblue;
   background-color: black;
   display: flex;
+  justify-content: space-around;
+  color: white;
 }
 
 .resource-column {
-  float: left;
-  width: 15vw;
+  width: 10vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .resource-row {
   color: white;
   display: flex;
-  margin: 1.5vh;
+  margin: 1vh;
   font-size: 1vw;
 }
 
 .resource-display-container {
-  float: left;
 }
 
 /* Clear floats after the columns */
