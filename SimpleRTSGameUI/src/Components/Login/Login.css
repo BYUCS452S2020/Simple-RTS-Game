@@ -1,0 +1,9 @@
+.login-container {
+    padding: 6vh 50px;
+    display: flex;
+    justify-content: center;
+}
+
+.register-button {
+    float: right;
+}

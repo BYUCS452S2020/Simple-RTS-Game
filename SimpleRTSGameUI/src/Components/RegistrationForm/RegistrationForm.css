@@ -1,0 +1,10 @@
+.registration-container {
+    padding: 6vh 50px;
+    display: flex;
+    justify-content: center;
+
+}
+
+.login-button {
+    float: right;
+}
