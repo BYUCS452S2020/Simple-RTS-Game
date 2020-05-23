@@ -1,53 +1,88 @@
-# Simple-RTS-Game
-##### Team:
-Jacob (The Great) Walker, Norberto (The Mighty) Martinez, and Michael (The Wizard) Black
+# Simple RTS
 
-## Project Pitch
+This project will be an over-simplified multiplayer Real Time Strategy game. Players will create structures and units to fight and conquer the other players on the map. This will be playable in the browser for easy interoperability across different operating systems
 
-see the project pitch [here](https://github.com/BYUCS452S2020/Simple-RTS-Game/blob/master/Project%20Pitch%20CS%20452.pdf)
+See the project pitch [here](https://github.com/BYUCS452S2020/Simple-RTS-Game/blob/master/Project%20Pitch%20CS%20452.pdf)
 
-## Database Schemas
+See our database schemas [here](https://github.com/BYUCS452S2020/Simple-RTS-Game/blob/master/DBSchemas.md)
 
-#### User
+## Getting Started
 
-user (<ins>user_id</ins>, username, password, salt, first_name, last_name, email, avatar_id)
+1. Clone the repository
+2. Navigate to the root folder
+3. Run `npm install`
+4. Run `npm start`
+  * This runs both the server and the client concurrently
+  * To run separately use the commands `npm run server` and `npm run client`
+  * By default server is on localhost:4000 and client is on localhost:3000
 
-* Foreign Key avatar_id references avatar
+### Prerequisites
 
-Contains user information for login
+You will need node.js and npm installed on your machine.
 
-#### Avatar
+Check if you have a version of node and npm installed
 
-avatar (<ins>avatar_id</ins>, happy, mad, mocking)
+```
+node -v
+npm -v
+```
 
-Contains sprite images for avatar emotions
+#### Instructions for Installing Node.js
 
-#### Inventory
+##### Linux
+https://nodejs.org/en/download/package-manager/
 
-inventory (<ins>inventory_id</ins>, owner, wood, stone, gold)
+##### MacOS or Windows
+https://nodejs.org/en/download/
 
-* Foreign Key owner references user
 
-Keeps running totals of each players resources
+## Running the tests
 
-#### Troop
+Navigate to the root folder and run the following:
+```
+npm test
+```
 
-troop (<ins>troop_id</ins>, owner, name, type, location_x, location_y, health, speed, attack)
+## Deployment
 
-* Foreign Key owner references user
+TODO (we don't have a host to deploy to yet)
 
-Holds information for each troop created, including who they belong to
+## Built With
 
-#### Building
+* [React](https://reactjs.org/) - The web framework used for the front end (client)
+* [Express](https://expressjs.com/) - The web framework used for the back end (server)
+* [Tiled](https://www.mapeditor.org/) - The map editor used for our game maps
+* [Socket.io](https://socket.io) - The engine used for creating real time game updates between web frameworks
+* [Picolabs](http://picolabs.io/) - The engine used for our NoSQL database and back end (server)
 
-building (<ins>building_id</ins>, owner, location_x, location_y,  health, name)
+## Contributing
 
-* Foreign Key owner references user
+If you wish to contribute here are some simple things you can do
 
-Holds information for buildings/structures on the map
+* Open an issue and report bugs or request features
+* Contribute code by:
+  1. Cloning or Forking the Repo
+  2. Making a new branch
+  3. Then submitting a pull request
+  4. Please include descriptions and screenshots if you can (not required)
+  5. If it passes our tests then we will merge it into master
 
-#### Resource
+## Versioning
 
-resource (<ins>resource_id</ins>, location_x, location_y, type, amount)
+We use [SemVer](http://semver.org/) for versioning.
 
-Keeps track of where resources are located on the map, and how much is available at each point
+## Authors
+
+* **Norberto Martinez**
+* **Michael Black**
+* **Jacob Walker**
+
+See also the list of [contributors](https://github.com/BYUCS452S2020/Simple-RTS-Game/graphs/contributors) who participated in this project.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+## Acknowledgments
+
+* Thanks to [Keny.nl](https://www.kenney.nl/assets) for the free tilesets used to create our game maps
