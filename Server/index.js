@@ -2,23 +2,12 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const serv = require('http').Server(app);
+const Dao = require('./db/dao.js');
+const Dbms = require('./db/dbms.js');
 const PORT = 4000;
-// const sqlite3 = require('sqlite3').verbose();
-// var db = new sqlite3.Database('./db/database.sqlite', (err) => {
-//     if (err){
-//         console.error(err.message);
-//     }
-//     console.log('Connected to database');
-// });
 
-// db.serialize(function() {
-//     db.run('CREATE TABLE IF NOT EXISTS avatar( avatar_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, happy BLOB, mad	BLOB, mocking BLOB )');
-//     db.run('CREATE TABLE IF NOT EXISTS building(building_id INTEGER, owner INTEGER, location_x INTEGER, location_y INTEGER, health INTEGER, name TEXT, PRIMARY KEY(building_id))');
-//     db.run('CREATE TABLE IF NOT EXISTS inventory ( inventory_id INTEGER, owner INTEGER, wood INTEGER, stone INTEGER, gold INTEGER, FOREIGN KEY(owner) REFERENCES user(user_id), PRIMARY KEY(inventory_id))');
-//     db.run('CREATE TABLE IF NOT EXISTS resource ( resource_id	INTEGER PRIMARY KEY AUTOINCREMENT, location_x INTEGER, location_y INTEGER, type TEXT, amount INTEGER)');
-//     db.run('CREATE TABLE IF NOT EXISTS troop (troop_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, owner INTEGER, name TEXT, type INTEGER, location_x INTEGER, location_y INTEGER, health INTEGER, speed INTEGER, attack INTEGER, FOREIGN KEY(owner) REFERENCES user(user_id))');
-//     db.run('CREATE TABLE IF NOT EXISTS user ( user_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL UNIQUE, password TEXT NOT NULL, salt TEXT, last_name TEXT, email TEXT, avatar_id INTEGER, FOREIGN KEY(avatar_id) REFERENCES avatar(avatar_id) )');
-// })
+const dao = new Dao('./db/database.sqlite');
+const dbms = new Dbms(dao);
 
 app.use(cors());
 
@@ -31,6 +20,9 @@ app.get('/Sample.png', function(req, res) {
 app.get('/maps/:mapId', function(req, res) {
   res.sendFile(__dirname + '/maps/level' + req.params.mapId + '.json');
 });
+app.get('/maps/:mapId/preview', function(req, res) {
+	res.sendFile(__dirname + '/maps/level' + req.params.mapId + '.png');
+})
 app.get('/tiles/:name?', function(req, res) {
 	let name = req.params.name;
 	if (!name) {
@@ -53,7 +45,7 @@ app.post('/login', function(req, res){
 
 app.post('/register', function(req, res){
     console.log("recieved register request");
-    
+
     let email = req.params.email;
     let password = req.params.password;
     let username = req.params.username;
@@ -62,6 +54,24 @@ app.post('/register', function(req, res){
 
     res.status(200).send({message: "It worked" });
 });
+
+app.get('/users', async function(req, res) {
+	res.status(200).send(await dbms.getUsers());
+})
+
+app.get('troops', async function(req, res) {
+	res.status(200).send(await dbms.getTroops());
+})
+
+app.post('troops', async function(req, res) {
+	const { name, type, health, speed, attack } = req.params;
+	if (name && type && health && speed && attack) {
+		res.status(200).send(await dbms.addTroop(name, type, health, speed, attack));
+	}
+	else {
+		res.status(400).send("Bad Parameters (need name, type, health, speed, and attack)")
+	}
+})
 
 serv.listen(PORT);
 console.log(`server listening on port ${PORT}`);
