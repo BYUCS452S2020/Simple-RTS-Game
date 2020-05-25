@@ -1,32 +1,115 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { fetchGames } from '../../actions';
+import Jumbotron from 'react-bootstrap/Jumbotron';
+import Tab from 'react-bootstrap/Tab';
+import Table from 'react-bootstrap/Table'
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Nav from 'react-bootstrap/Nav';
+import Button from 'react-bootstrap/Button';
+import history from '../../history';
 
 class Home extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      selected: {}
+    }
+  }
+  renderPreview() {
+    if (this.state.selected.preview) {
+      return (
+        <div>
+          <h3>{this.state.selected.name}</h3>
+          <img src={'http://' + this.state.selected.preview} style={{ width: "100%"}} alt="preview"/>
+        </div>
+      );
+    }
+
+  }
+  renderGameList() {
+    if (this.props.games.length > 0) {
+      return this.props.games.map((game, i) => {
+        return (
+          <tr key={i} onClick={() => this.setState({ selected: game })}>
+            <td>{game.name}</td>
+            <td>{game.description}</td>
+            <td>{game.maxPlayers}</td>
+          </tr>
+        );
+      })
+    }
+    else return <div></div>
+  }
   render() {
     return (
-      <div className="container">
-        <div className="jumbotron">
-          <h1 className="display-4">Simple RTS</h1>
-          <p className="lead">Go ahead and find a game to join or start your own game</p>
-          <hr className="my-4" />
+      <Jumbotron className="p-5" fluid>
+        <h1>Simple RTS</h1>
+        <p className="lead">Go ahead and find a game to join or start your own game</p>
+        <hr className="my-4" />
 
-          <div className="row">
-            <div className="col-3">
-              <div className="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                <a className="nav-link active" id="join-game-tab" data-toggle="pill" href="#join-game-body" role="tab" aria-controls="join-game-body" aria-selected="true">Join Game</a>
-                <a className="nav-link" id="create-game-tab" data-toggle="pill" href="#create-game-body" role="tab" aria-controls="create-game-body" aria-selected="false">Create Game</a>
-              </div>
-            </div>
-            <div className="col-9">
-              <div className="tab-content" id="v-pills-tabContent">
-                <div className="tab-pane fade show active" id="join-game-body" role="tabpanel" aria-labelledby="join-game-tab">This is where you can join games that other players have created/started</div>
-                <div className="tab-pane fade" id="create-game-body" role="tabpanel" aria-labelledby="create-game-tab">This is where you can start your own game/lobby</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+        <Tab.Container defaultActiveKey="join">
+          <Row>
+            <Col xs={3}>
+              <Nav variant="pills" className="flex-column">
+                <Nav.Item>
+                  <Nav.Link eventKey="join" onSelect={() => this.setState({ selected: {} })}>Join Game</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  <Nav.Link eventKey="create">Create Game</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                  <hr />
+                  {this.renderPreview()}
+                </Nav.Item>
+              </Nav>
+            </Col>
+            <Col xs={9}>
+              <Tab.Content>
+                <Tab.Pane eventKey="join">
+                  Currently no games available to join
+                </Tab.Pane>
+                <Tab.Pane eventKey="create">
+                  <Table striped hover responsive>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th># of Players</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {this.renderGameList()}
+                    </tbody>
+                  </Table>
+                  <Button
+                    variant="success"
+                    disabled={!this.state.selected.id}
+                    onClick={() => history.push('/game/' + this.state.selected.id)}>
+                    Create Game
+                  </Button>
+                </Tab.Pane>
+              </Tab.Content>
+            </Col>
+          </Row>
+        </Tab.Container>
+      </Jumbotron>
     );
   }
 }
 
-export default Home;
+const mapStateToProps = (state) => {
+  return {
+    games: state.games.list,
+    availableGames: state.games.available
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchGames: () => { dispatch(fetchGames()) }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

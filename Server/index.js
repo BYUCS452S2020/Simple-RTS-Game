@@ -19,6 +19,17 @@ app.get('/', function(req, res) {
 app.get('/Sample.png', function(req, res) {
 	res.sendFile(__dirname + '/Sample.png');
 })
+app.get('/games', function(req, res) {
+	let host = req.get('host');
+	res.send([
+		{ id: 1, name: 'level1', preview: host + '/maps/1/preview', map: host + '/maps/1', description: "Simple 2 player map", maxPlayers: 2 },
+		{ id: 2, name: 'level2', preview: host + '/maps/2/preview', map: host + '/maps/2', description: "Simple 4 player map", maxPlayers: 4 },
+		{ id: 3, name: 'level3', preview: host + '/maps/3/preview', map: host + '/maps/3', description: "Simple 3 player map", maxPlayers: 3 },
+	]);
+});
+app.get('/games/available', function(req, res) {
+	res.send([]);
+})
 app.get('/maps/:mapId', function(req, res) {
   res.sendFile(__dirname + '/maps/level' + req.params.mapId + '.json');
 });
@@ -95,11 +106,11 @@ app.get('/users', async function(req, res) {
 	res.status(200).send(await dbms.getUsers());
 })
 
-app.get('troops', async function(req, res) {
+app.get('/troops', async function(req, res) {
 	res.status(200).send(await dbms.getTroops());
 })
 
-app.post('troops', async function(req, res) {
+app.post('/troops', async function(req, res) {
 	const { name, type, health, speed, attack } = req.params;
 	if (name && type && health && speed && attack) {
 		res.status(200).send(await dbms.addTroop(name, type, health, speed, attack));

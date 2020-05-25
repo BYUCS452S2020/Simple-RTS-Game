@@ -12,9 +12,10 @@ export const modals = {
   },
 };
 
-export default function partnerReducer(state = modals, action) {
+export default function modalsReducer(state = modals, action) {
   switch (action.type) {
     case TOGGLE_MODAL:
+      console.log("toggling", action.modalId);
       return Object.assign({}, state, {
         [action.modalId]: {
           isVisible: !state[action.modalId].isVisible,
@@ -29,6 +30,7 @@ export default function partnerReducer(state = modals, action) {
         }
       })
     default:
+      console.log("default");
       return state;
   }
 }

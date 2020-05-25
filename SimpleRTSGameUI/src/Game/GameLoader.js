@@ -8,6 +8,8 @@ class GameLoader extends React.Component {
       map: {},
       tiles: []
     }
+    let array = window.location.href.split('/');
+    this.mapId = array[array.length - 1]
   }
 
   componentDidMount() {
@@ -20,7 +22,7 @@ class GameLoader extends React.Component {
   }
 
   loadMap = () => {
-    fetch("http://localhost:4000/maps/1")
+    fetch("http://localhost:4000/maps/" + this.mapId)
       .then(response => response.json())
       .then(data => {
         // console.log(data);

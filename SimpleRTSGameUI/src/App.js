@@ -46,7 +46,7 @@ function App() {
               <Home/>
             </PrivateRoute>
 
-            <PrivateRoute path="/game" exact={true}>
+            <PrivateRoute path="/game/:id" exact={true}>
               <Map/>
               <Footer/>
             </PrivateRoute>

@@ -20,12 +20,11 @@ export function login(username, password) {
         history.push('/home');
       }
       else {
-        handleError(response);
+        dispatch(handleError(response));
       }
     }
     catch (e) {
-      console.log(e);
-      handleError(e);
+      dispatch(handleError(e));
     }
   }
 }
@@ -46,11 +45,11 @@ export function register(user) {
         history.push('/home');
       }
       else {
-        handleError(response);
+        dispatch(handleError(response));
       }
     }
     catch (e) {
-      handleError(e);
+      dispatch(handleError(e));
     }
   }
 }
@@ -86,19 +85,55 @@ export function closeModal(modalId) {
 
 export const ERROR = "ERROR";
 export function handleError(error) {
-  console.log(error, error.status);
+  if (error.response) {
+    error = error.response;
+  }
   if (error.status && error.status === 401) {
     console.log("logging out");
     return logout();
   }
-  if (error.status && error.status === 400) {
-    let message = error.message
-    console.log("bad request", message);
+  else if (error.status && error.status === 400) {
+    let message = error.data.message
+    console.log("bad request");
     return toggleModal("error", {"title": "Uh Oh", "message": message});
   }
+  else {
+    return {
+      type: ERROR,
+      error
+    }
+  }
+}
+
+export const AVAILABLE_GAMES = "AVAILABLE_GAMES";
+function availableGames(result) {
   return {
-    type: ERROR,
-    error
+    type: AVAILABLE_GAMES,
+    games: result.data
+  }
+}
+export function fetchAvailableGames() {
+  return async (dispatch) => {
+    let response = await axios('http://localhost:4000/games/available');
+    if (response.status === 200) {
+      dispatch(availableGames(response));
+    }
+  }
+}
+export const GAME_LIST = "GAME_LIST";
+function gameListResult(result) {
+  return {
+    type: GAME_LIST,
+    games: result.data
+  }
+}
+export function fetchGames() {
+  return async (dispatch) => {
+    let response = await axios('http://localhost:4000/games');
+    console.log(response);
+    if (response.status === 200) {
+      dispatch(gameListResult(response));
+    }
   }
 }
 
