@@ -20,16 +20,16 @@ class Profile extends React.Component {
   }
 
   displayCardHeader() {
-    let profileInfoClass = (this.state.page === 'info') ? "nav-link active" : "nav-link"
-    let avatarClass = (this.state.page === 'avatar') ? "nav-link active" : "nav-link"
+    let profileInfoclassName = (this.state.page === 'info') ? "nav-link active" : "nav-link"
+    let avatarclassName = (this.state.page === 'avatar') ? "nav-link active" : "nav-link"
     return (
-      <div class="card-header">
-        <ul class="nav nav-tabs card-header-tabs">
-          <li class="nav-item">
-            <a class={profileInfoClass} onClick={()=>{this.switchTabs('info')}}>Profile Info</a>
+      <div className="card-header">
+        <ul className="nav nav-tabs card-header-tabs">
+          <li className="nav-item">
+            <button className={profileInfoclassName} onClick={()=>{this.switchTabs('info')}}>Profile Info</button>
           </li>
-          <li class="nav-item">
-            <a class={avatarClass} onClick={()=>{this.switchTabs('avatar')}}>Avatar</a>
+          <li className="nav-item">
+            <button className={avatarclassName} onClick={()=>{this.switchTabs('avatar')}}>Avatar</button>
           </li>
         </ul>
       </div>
@@ -48,10 +48,10 @@ class Profile extends React.Component {
         )
       default:
         return (
-          <div class="card-body">
-            <h5 class="card-title">Profile Page</h5>
-            <p class="card-text">You can make changes to your profile information or avatar. </p>
-            <a class="btn btn-primary" onClick={()=>{this.switchTabs('info')}}>Make Changes</a>
+          <div className="card-body">
+            <h5 className="card-title">Profile Page</h5>
+            <p className="card-text">You can make changes to your profile information or avatar. </p>
+            <button className="btn btn-primary" onClick={()=>{this.switchTabs('info')}}>Make Changes</button>
           </div>
         )
     }
@@ -59,7 +59,7 @@ class Profile extends React.Component {
 
   render() {
     return (
-      <div class="card text-center">
+      <div className="card text-center">
         {this.displayCardHeader()}
         {this.displayCardBody()}
       </div>

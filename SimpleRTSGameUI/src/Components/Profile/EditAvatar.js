@@ -65,10 +65,10 @@ class EditAvatar extends React.Component {
     let map = (readonly) ? this.props.avatarImages : this.state.avatarImagesField
     for(let image in map) {
       out.push(
-        <div class="editAvatarContainer">
-          <img src={map[image]} class="editAvatar" alt="Smiley face" />
-          {!readonly && <input class="avatarInput" type="file" id={image} accept="image/*" onChange={this.handleChange} />}
-          <div class="avatarTypeText"> Your {image} avatar. </div>
+        <div key={image} className="editAvatarContainer">
+          <img src={map[image]} className="editAvatar" alt="Smiley face" />
+          {!readonly && <input className="avatarInput" type="file" id={image} accept="image/*" onChange={this.handleChange} />}
+          <div className="avatarTypeText"> Your {image} avatar. </div>
         </div>
       )
     }
@@ -79,14 +79,14 @@ class EditAvatar extends React.Component {
     let readonly = this.state.readonly
     if(readonly) {
       return (
-        <a class="btn btn-primary" onClick={this.enableEditing.bind(this)}>Edit</a>
+        <button className="btn btn-primary" onClick={this.enableEditing.bind(this)}>Edit</button>
       )
     }
     else {
       return (
         <div>
-          <a class="btn btn-primary duoButton" onClick={this.cancelChanges.bind(this)}>Cancel</a>
-          <a class="btn btn-primary duoButton" onClick={this.saveProfileInfo.bind(this)}>Save</a>
+          <button className="btn btn-primary duoButton" onClick={this.cancelChanges.bind(this)}>Cancel</button>
+          <button className="btn btn-primary duoButton" onClick={this.saveProfileInfo.bind(this)}>Save</button>
         </div>
       )
     }
@@ -94,8 +94,8 @@ class EditAvatar extends React.Component {
 
   render() {
     return (
-      <div class="editAvatarBody">
-        <h5 class="subHeader">Avatar Page</h5>
+      <div className="editAvatarBody">
+        <h5 className="subHeader">Avatar Page</h5>
         {this.displayAvatarImages()}
         {this.displayButtons()}
       </div>

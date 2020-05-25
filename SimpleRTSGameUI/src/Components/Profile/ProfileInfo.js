@@ -26,7 +26,7 @@ class ProfileInfo extends React.Component {
       this.setState({
         firstName: this.props.firstName,
         lastName: this.props.lastName,
-        email: this.props.email ? this.props.email : "" 
+        email: this.props.email ? this.props.email : ""
       })
     }
   }
@@ -70,23 +70,23 @@ class ProfileInfo extends React.Component {
     return (
       <form>
         <div className="form-group row">
-          <label for="firstName" className="col-sm-2 col-form-label">First Name</label>
+          <label htmlFor="firstName" className="col-sm-2 col-form-label">First Name</label>
           <div className="col-sm-10">
-          {(readonly) ? <input type="text"  className="form-control-plaintext" id="firstName" value={this.state.firstName} readonly/>
+          {(readonly) ? <input type="text"  className="form-control-plaintext" id="firstName" value={this.state.firstName} readOnly/>
                       : <input type="text" className="form-control" id="firstNameField" placeholder="First Name" value={this.state.firstNameField} onChange={this.inputChange.bind(this)}/>}
           </div>
         </div>
         <div className="form-group row">
-          <label for="lastName" className="col-sm-2 col-form-label">Last Name</label>
+          <label htmlFor="lastName" className="col-sm-2 col-form-label">Last Name</label>
           <div className="col-sm-10">
-            {(readonly) ? <input type="text"  className="form-control-plaintext" id="lastName" value={this.state.lastName} readonly/>
+            {(readonly) ? <input type="text"  className="form-control-plaintext" id="lastName" value={this.state.lastName} readOnly/>
                         : <input type="text" className="form-control" id="lastNameField" placeholder="Last Name" value={this.state.lastNameField} onChange={this.inputChange.bind(this)}/>}
           </div>
         </div>
         <div className="form-group row">
-          <label for="email" className="col-sm-2 col-form-label">Email</label>
+          <label htmlFor="email" className="col-sm-2 col-form-label">Email</label>
           <div className="col-sm-10">
-            {(readonly) ? <input type="text"  className="form-control-plaintext" id="email" value={this.state.email} readonly/>
+            {(readonly) ? <input type="text"  className="form-control-plaintext" id="email" value={this.state.email} readOnly/>
                         : <input type="text" className="form-control" id="emailField" placeholder="Email" value={this.state.emailField} onChange={this.inputChange.bind(this)}/>}
           </div>
         </div>
@@ -98,14 +98,14 @@ class ProfileInfo extends React.Component {
     let readonly = this.state.readonly
     if(readonly) {
       return (
-        <a className="btn btn-primary" onClick={this.enableEditing.bind(this)}>Edit</a>
+        <button className="btn btn-primary" onClick={this.enableEditing.bind(this)}>Edit</button>
       )
     }
     else {
       return (
         <div>
-          <a className="btn btn-primary duoButton" onClick={this.cancelChanges.bind(this)}>Cancel</a>
-          <a className="btn btn-primary duoButton" onClick={this.saveProfileInfo.bind(this)}>Save</a>
+          <button className="btn btn-primary duoButton" onClick={this.cancelChanges.bind(this)}>Cancel</button>
+          <button className="btn btn-primary duoButton" onClick={this.saveProfileInfo.bind(this)}>Save</button>
         </div>
       )
     }
