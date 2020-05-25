@@ -6,9 +6,13 @@ import Header from './Components/Header/Header';
 import RegistrationForm from './Components/RegistrationForm/RegistrationForm';
 import Login from './Components/Login/Login'
 import Home from './Components/Home/Home';
+import PrivateRoute from './PrivateRoute';
+import history from './history';
+import SuccessModal from './Components/Modals/Success';
+import ErrorModal from './Components/Modals/Error';
 
 import {
-  BrowserRouter as Router,
+  Router,
   Switch,
   Route
 } from "react-router-dom";
@@ -16,7 +20,7 @@ import {
 function App() {
 
   return (
-    <Router>
+    <Router history={history}>
       <div className="App-header">
 
           <Switch>
@@ -36,17 +40,20 @@ function App() {
               <Login/>
             </Route>
 
-            <Route path="/home" exact={true}>
+            <PrivateRoute path="/home" exact={true}>
               <Header/>
               <Home/>
-            </Route>
+            </PrivateRoute>
 
-            <Route path="/game" exact={true}>
+            <PrivateRoute path="/game" exact={true}>
               <Map/>
               <Footer/>
-            </Route>
+            </PrivateRoute>
 
           </Switch>
+
+        <SuccessModal />
+        <ErrorModal />
 
    </div>
   </Router>

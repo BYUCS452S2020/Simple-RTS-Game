@@ -1,8 +1,10 @@
 import React from 'react';
-import './Header.css';
 import { useLocation, useHistory } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { logout } from '../../actions';
+import './Header.css';
 
-function Header() {
+function Header(props) {
   const history = useHistory();
   const location = useLocation();
 
@@ -15,8 +17,7 @@ function Header() {
       case '/login':
         return <button className="btn btn-light" onClick={() => history.push('/register')}>Register</button>
       default:
-        return <button className="btn btn-light" onClick={() => history.push('/login')}>Logout</button>
-
+        return <button className="btn btn-light" onClick={() => props.logout()}>Logout</button>
     }
   }
   return(
@@ -27,4 +28,10 @@ function Header() {
   );
 }
 
-export default Header;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logout: () => { dispatch(logout()) }
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Header);

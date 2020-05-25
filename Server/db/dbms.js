@@ -7,7 +7,7 @@ class Dbms {
     this.dao = dao;
   }
   async loginUser(username, password) {
-    let user = this.getUserByUsername(username);
+    let user = await this.getUserByUsername(username);
     let hashedPass = await bcrypt.hash(password, user.salt);
     return hashedPass === user.password;
   }
@@ -18,6 +18,9 @@ class Dbms {
     let sql = `INSERT INTO user
       (username, password, salt, first_name, last_name, avatar_id)
       VALUES (?, ?, ?, ?, ?, ?)`;
+
+    // Returns the id of the user
+    // looks like this { id: 1 }
     return this.dao.run(sql, [username, hashedPass, salt, fName, lName, avatarId])
   }
   async getUserById(id) {

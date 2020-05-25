@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
-import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+// import axios from 'axios';
+// import { useHistory } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { register } from '../../actions';
 import './RegistrationForm.css'
 
 function RegistrationForm(props) {
@@ -36,37 +38,19 @@ function RegistrationForm(props) {
                 "firstName":state.firstName,
                 "lastName":state.lastName
             }
-            axios.post("http://localhost:4000/register", payload)
-                .then(function (response) {
-                    if(response.data.code === 200){
-                        setState(prevState => ({
-                            ...prevState,
-                            'successMessage' : 'Registration successful. Redirecting to home page..'
-                        }))
-                        redirectToHome();
-                        // props.showError(null)
-                    } else if(response.data.message.length) {
-                        console.log("Registration response recieved");
-
-                        redirectToHome();
-                    }else{
-                        // props.showError("Some error ocurred");
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+            console.log(payload);
+            props.register(payload);
         } else {
             // props.showError('Please enter valid username and password')
         }
 
     }
 
-    const history = useHistory();
+    // const history = useHistory();
 
-    const redirectToHome = () => {
-        history.push("/home");
-    }
+    // const redirectToHome = () => {
+    //     history.push("/home");
+    // }
 
     return(
         <div className='registration-container'>
@@ -148,4 +132,10 @@ function RegistrationForm(props) {
         </div>
     )
 }
-export default RegistrationForm
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    register: (user) => { dispatch(register(user)) }
+  }
+}
+export default connect(null, mapDispatchToProps)(RegistrationForm)

@@ -10,6 +10,8 @@ const dao = new Dao('./db/database.sqlite');
 const dbms = new Dbms(dao);
 
 app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.get('/', function(req, res) {
 	res.send('Simple RTS Backend');
@@ -36,23 +38,57 @@ app.get('/tiles/:name?', function(req, res) {
 	}
 });
 
-app.post('/login', function(req, res){
-    console.log("recieved")
-    let username = req.params.username;
-    let password = req.params.password;
-    res.send({message: "It worked" });
+app.post('/login', async function(req, res){
+    console.log("recieved login request", req.body.username)
+    let username = req.body.username;
+    let password = req.body.password;
+		try {
+			let response = await dbms.loginUser(username, password);
+			if (response) {
+				console.log("sending 200");
+				res.status(200).send({status: 200, message: "It worked"});
+			}
+			else {
+				console.log("sending 400");
+				res.status(400).send({status: 400, message: "Invalid username or password"});
+			}
+		}
+		catch (e) {
+			console.log("sending 500");
+			res.status(500).send({status: 500, message: "Internal Server Error", error: e});
+		}
 });
 
-app.post('/register', function(req, res){
+app.post('/register', async function(req, res){
     console.log("recieved register request");
 
-    let email = req.params.email;
-    let password = req.params.password;
-    let username = req.params.username;
-    let firstName = req.params.firstName;
-    let lastName = req.params.lastName;
+    let email = req.body.email;
+    let password = req.body.password;
+    let username = req.body.username;
+    let firstName = req.body.firstName;
+    let lastName = req.body.lastName;
 
-    res.status(200).send({message: "It worked" });
+
+		try {
+			let usernameTaken = await dbms.getUserByUsername(username);
+			if (usernameTaken) {
+				res.status(400).send({message: "That username is already taken"})
+			}
+			else {
+				let response = await dbms.registerUser(username, password, firstName, lastName);
+				console.log(response);
+				if (response) {
+					res.status(200).send({message: "It worked"});
+				}
+				else {
+					res.status(400).send({message: "Invalid username or password"});
+				}
+			}
+		}
+		catch (e) {
+			console.log(e);
+			res.status(500).send(e);
+		}
 });
 
 app.get('/users', async function(req, res) {

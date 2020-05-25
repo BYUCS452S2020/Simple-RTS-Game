@@ -16,7 +16,7 @@ class Dao {
             this.db.run('CREATE TABLE IF NOT EXISTS inventory ( inventory_id INTEGER, owner INTEGER, wood INTEGER, stone INTEGER, gold INTEGER, FOREIGN KEY(owner) REFERENCES user(user_id), PRIMARY KEY(inventory_id))');
             this.db.run('CREATE TABLE IF NOT EXISTS resource ( resource_id INTEGER PRIMARY KEY AUTOINCREMENT, location_x INTEGER, location_y INTEGER, type TEXT, amount INTEGER)');
             this.db.run('CREATE TABLE IF NOT EXISTS troop (troop_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, owner INTEGER, name TEXT, type INTEGER, location_x INTEGER, location_y INTEGER, health INTEGER, speed INTEGER, attack INTEGER, FOREIGN KEY(owner) REFERENCES user(user_id))');
-            this.db.run('CREATE TABLE IF NOT EXISTS user ( user_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL UNIQUE, password TEXT NOT NULL, salt TEXT, last_name TEXT, email TEXT, avatar_id INTEGER, FOREIGN KEY(avatar_id) REFERENCES avatar(avatar_id) )');
+            this.db.run('CREATE TABLE IF NOT EXISTS user ( user_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL UNIQUE, password TEXT NOT NULL, salt TEXT, first_name TEXT, last_name TEXT, email TEXT, avatar_id INTEGER, FOREIGN KEY(avatar_id) REFERENCES avatar(avatar_id) )');
         })
       }
     })
