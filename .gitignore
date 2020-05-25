@@ -1,5 +1,6 @@
 node_modules/
-package-lock.json 
+package-lock.json
+*package-lock.json
 Server/node_modules/.bin/detect-libc
 Server/node_modules/.bin/mime
 Server/node_modules/.bin/mkdirp
