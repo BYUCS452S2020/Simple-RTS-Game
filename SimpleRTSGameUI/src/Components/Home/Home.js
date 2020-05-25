@@ -17,6 +17,9 @@ class Home extends React.Component {
       selected: {}
     }
   }
+  componentDidMount(){
+    this.props.fetchGames();
+  }
   renderPreview() {
     if (this.state.selected.preview) {
       return (
