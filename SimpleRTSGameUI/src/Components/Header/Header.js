@@ -20,9 +20,27 @@ function Header(props) {
         return <button className="btn btn-light" onClick={() => props.logout()}>Logout</button>
     }
   }
+
+  const renderPageButtons = () => {
+    if(props.isAuthenticated) {
+      return (
+        <span>
+          <button className="headerButton" onClick={() => history.push('/home')}>Home</button>
+          <button className="headerButton" onClick={() => history.push('/profile')}>Profile</button>
+        </span>
+      )
+    }
+    else {
+      return <div></div>;
+    }
+  }
+
   return(
     <nav className="navbar navbar-dark bg-dark">
-      <div className="navbar-brand">Simple RTS</div>
+      <div>
+        <div className="navbar-brand">Simple RTS</div>
+        {renderPageButtons()}
+      </div>
       {renderActionButton()}
     </nav>
   );
@@ -34,4 +52,10 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(Header);
+const mapStateToProps = (state) => {
+  return {
+    isAuthenticated: state.auth.isAuthenticated
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

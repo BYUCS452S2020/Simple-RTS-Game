@@ -11,7 +11,7 @@ class Dao {
         console.log('Connected to database')
         // create the tables if they don't already exist
         this.db.serialize(() => {
-            this.db.run('CREATE TABLE IF NOT EXISTS avatar( avatar_id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, happy BLOB, mad BLOB, mocking BLOB )');
+            this.db.run('CREATE TABLE IF NOT EXISTS avatar( user_id INTEGER PRIMARY KEY, happy BLOB, mad BLOB, mocking BLOB, FOREIGN Key(user_id) REFERENCES user(user_id) )');
             this.db.run('CREATE TABLE IF NOT EXISTS building(building_id INTEGER, owner INTEGER, location_x INTEGER, location_y INTEGER, health INTEGER, name TEXT, PRIMARY KEY(building_id))');
             this.db.run('CREATE TABLE IF NOT EXISTS inventory ( inventory_id INTEGER, owner INTEGER, wood INTEGER, stone INTEGER, gold INTEGER, FOREIGN KEY(owner) REFERENCES user(user_id), PRIMARY KEY(inventory_id))');
             this.db.run('CREATE TABLE IF NOT EXISTS resource ( resource_id INTEGER PRIMARY KEY AUTOINCREMENT, location_x INTEGER, location_y INTEGER, type TEXT, amount INTEGER)');

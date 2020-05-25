@@ -2,7 +2,7 @@ import { LOGIN_RESULT, LOGOUT } from '../actions';
 
 // initialState
 export const auth = {
-  token: null,
+  userId: null,
   isAuthenticated: false
 };
 
@@ -10,7 +10,7 @@ export default function authReducer(state = auth, action) {
   switch (action.type) {
     case LOGIN_RESULT:
       return Object.assign({}, state, {
-        token: action.token,
+        userId: action.userId,
         isAuthenticated: action.isAuthenticated
       })
     case LOGOUT:

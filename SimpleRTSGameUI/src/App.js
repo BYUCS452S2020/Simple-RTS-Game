@@ -10,6 +10,7 @@ import PrivateRoute from './PrivateRoute';
 import history from './history';
 import SuccessModal from './Components/Modals/Success';
 import ErrorModal from './Components/Modals/Error';
+import Profile from './Components/Profile/Profile'
 
 import {
   Router,
@@ -50,6 +51,10 @@ function App() {
               <Footer/>
             </PrivateRoute>
 
+            <PrivateRoute path="/profile" exact={true}>
+              <Header/>
+              <Profile/>
+            </PrivateRoute>
           </Switch>
 
         <SuccessModal />

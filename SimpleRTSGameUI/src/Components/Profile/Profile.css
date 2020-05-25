@@ -1,0 +1,43 @@
+.nav-item:hover {
+  cursor: pointer;
+}
+
+.profileInfoBody {
+  width: 75vw;
+  padding: 10px;
+}
+
+.duoButton {
+  display:inline-block;
+   margin-right: 10px;
+}
+
+.editAvatarBody {
+  width: 75vw;
+  padding: 10px;
+}
+
+.editAvatarContainer {
+  margin: 10px;
+  text-align: left;
+}
+
+.avatarTypeText {
+  font-size: 20px;
+}
+
+.avatarInput {
+  margin: 10px;
+}
+
+.editAvatar {
+  max-width: 7vw;
+  max-height: 7vw;
+  min-width: 7vw;
+  min-height: 7vw;
+}
+
+.subHeader {
+  margin: 10px;
+  text-align: left;
+}

@@ -46,7 +46,7 @@ app.post('/login', async function(req, res){
 			let response = await dbms.loginUser(username, password);
 			if (response) {
 				console.log("sending 200");
-				res.status(200).send({status: 200, message: "It worked"});
+				res.status(200).send({status: 200, message: "It worked", userId: response.user_id});
 			}
 			else {
 				console.log("sending 400");
@@ -75,10 +75,10 @@ app.post('/register', async function(req, res){
 				res.status(400).send({message: "That username is already taken"})
 			}
 			else {
-				let response = await dbms.registerUser(username, password, firstName, lastName);
+				let response = await dbms.registerUser(username, password, firstName, lastName, email);
 				console.log(response);
 				if (response) {
-					res.status(200).send({message: "It worked"});
+					res.status(200).send({message: "It worked", userId: response.id});
 				}
 				else {
 					res.status(400).send({message: "Invalid username or password"});
@@ -106,6 +106,36 @@ app.post('troops', async function(req, res) {
 	}
 	else {
 		res.status(400).send("Bad Parameters (need name, type, health, speed, and attack)")
+	}
+})
+
+app.get('/avatar/:userId', async function(req, res) {
+	let userId = req.params.userId
+	res.status(200).send(await dbms.getAvatar(userId));
+})
+
+app.post('/avatar', async function(req, res) {
+	const { userId, happy, mad, mocking } = req.body;
+	if (userId && happy && mad && mocking) {
+		res.status(200).send(await dbms.setAvatar(userId, happy, mad, mocking));
+	}
+	else {
+		res.status(400).send("Bad Parameters need (userId, happy, mad, mocking)")
+	}
+})
+
+app.get('/user/:userId', async function(req, res) {
+	let userId = req.params.userId
+	res.status(200).send(await dbms.getUser(userId));
+})
+
+app.post('/user', async function(req, res) {
+	const { userId, firstName, lastName, email } = req.body;
+	if (userId && firstName && lastName && email) {
+		res.status(200).send(await dbms.updateUser(userId, firstName, lastName, email));
+	}
+	else {
+		res.status(400).send("Bad Parameters need (userId, firstName, lastName, email)")
 	}
 })
 

@@ -11,5 +11,16 @@
 
 .name {
     font-size: x-large;
-    
+
+}
+
+.headerButton {
+  background-color: transparent;
+  color: white;
+  border-color: transparent;
+}
+
+.headerButton:hover {
+  color: black;
+  cursor: pointer;
 }

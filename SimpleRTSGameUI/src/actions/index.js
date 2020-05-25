@@ -2,10 +2,10 @@ import axios from 'axios';
 import history from '../history';
 
 export const LOGIN_RESULT = 'LOGIN_RESULT';
-export function loginResult(token, isAuthenticated) {
+export function loginResult(userId, isAuthenticated) {
   return {
     type: LOGIN_RESULT,
-    token,
+    userId,
     isAuthenticated
   }
 }
@@ -15,7 +15,7 @@ export function login(username, password) {
       let response = await axios.post("http://localhost:4000/login", { username, password })
       if (response.status === 200) {
         // TODO: ADD AUTH TOKENS
-        dispatch(loginResult(null, true));
+        dispatch(loginResult(response.data.userId, true));
         console.log("navigating to home page");
         history.push('/home');
       }
@@ -42,7 +42,7 @@ export function register(user) {
       })
       if (response.status === 200) {
         // TODO: ADD AUTH TOKENS
-        dispatch(loginResult(null, true));
+        dispatch(loginResult(response.data.userId, true));
         history.push('/home');
       }
       else {
@@ -99,5 +99,103 @@ export function handleError(error) {
   return {
     type: ERROR,
     error
+  }
+}
+
+export const AVATAR_RESULT = 'AVATAR_RESULT';
+export function avatarResult(happy, mad, mocking) {
+  return {
+    type: AVATAR_RESULT,
+    happy,
+    mad,
+    mocking
+  }
+}
+
+export function getAvatar() {
+  return async (dispatch, getState) => {
+    try {
+      let userId = getState().auth.userId;
+      let response = await axios.get("http://localhost:4000/avatar/"+userId)
+      if (response.status === 200) {
+        dispatch(avatarResult(response.data.happy, response.data.mad, response.data.mocking));
+      }
+      else {
+        handleError(response);
+      }
+    }
+    catch (e) {
+      console.log(e);
+      handleError(e);
+    }
+  }
+}
+
+export function setAvatar(happy, mad, mocking) {
+  return async (dispatch, getState) => {
+    try {
+      let userId = getState().auth.userId;
+      let response = await axios.post("http://localhost:4000/avatar", {userId, happy, mad, mocking})
+      if (response.status === 200) {
+        dispatch(avatarResult(happy, mad, mocking));
+      }
+      else {
+        handleError(response);
+      }
+    }
+    catch (e) {
+      console.log(e);
+      handleError(e);
+    }
+  }
+}
+
+export const USER_RESULT = 'USER_RESULT';
+export function userResult(username, firstName, lastName, email) {
+  return {
+    type: USER_RESULT,
+    username,
+    firstName,
+    lastName,
+    email
+  }
+}
+
+export function getUser() {
+  return async (dispatch, getState) => {
+    try {
+      let userId = getState().auth.userId;
+      let response = await axios.get("http://localhost:4000/user/"+userId)
+      if (response.status === 200) {
+        dispatch(userResult(response.data.username, response.data.first_name, response.data.last_name, response.data.email));
+      }
+      else {
+        handleError(response);
+      }
+    }
+    catch(e) {
+      console.log(e);
+      handleError(e);
+    }
+  }
+}
+
+export function updateUser(firstName, lastName, email) {
+  return async (dispatch, getState) => {
+    try {
+      let userId = getState().auth.userId;
+      let username = getState().user.username;
+      let response = await axios.post("http://localhost:4000/user", {userId, firstName, lastName, email})
+      if (response.status === 200) {
+        dispatch(userResult(username, firstName, lastName, email));
+      }
+      else {
+        handleError(response);
+      }
+    }
+    catch (e) {
+      console.log(e);
+      handleError(e);
+    }
   }
 }
