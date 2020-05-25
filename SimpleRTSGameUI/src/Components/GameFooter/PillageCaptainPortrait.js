@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import './GameFooter.css';
 import BulmaHappy from "../../BulmaHappy.png";
 import BulmaAngry from "../../BulmaAngry.png";
@@ -9,11 +10,11 @@ class PillageCaptainPortrait extends React.Component {
     super(props);
     this.state = {
       portraitImage: {
-        "happy": BulmaHappy,
-        "angry": BulmaAngry,
-        "mocking": BulmaMocking
+        "happy": props.happy,
+        "angry": props.mad,
+        "mocking": props.mocking
       },
-      currentPortrait: BulmaHappy
+      currentPortrait: props.happy
     }
     this.getPortrait = this.getPortrait.bind(this);
   }
@@ -60,4 +61,13 @@ class PillageCaptainPortrait extends React.Component {
     )
   }
 }
-export default PillageCaptainPortrait;
+
+const mapStateToProps = (state) => {
+  return {
+    happy: state.avatar.happy,
+    mad: state.avatar.mad,
+    mocking: state.avatar.mocking
+  }
+}
+
+export default connect(mapStateToProps)(PillageCaptainPortrait);
