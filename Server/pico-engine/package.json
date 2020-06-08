@@ -1,0 +1,19 @@
+{
+  "name": "pico-engine",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "out": "lerna clean --yes && lerna exec -- npm i && rm -rf packages/*/package-lock.json && lerna exec --bail=false -- npm out",
+    "clean": "lerna clean --yes",
+    "clean-setup": "lerna clean --yes && rm -rf node_modules/ package-lock.json && npm run setup",
+    "bootstrap": "lerna bootstrap --hoist --no-ci --nohoist=browserify",
+    "setup": "npm i --no-package-lock && npm run bootstrap",
+    "publish": "npm run build && lerna publish",
+    "start": "cd packages/pico-engine && PORT=4000 npm start",
+    "test": "lerna run test",
+    "build": "cd packages/krl-parser && npm run build && cd ../krl-editor && npm run build && cd ../pico-engine-browser && npm run build"
+  },
+  "devDependencies": {
+    "lerna": "^3.2.1"
+  }
+}

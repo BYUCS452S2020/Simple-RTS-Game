@@ -6,6 +6,7 @@
     "test": "cd SimpleRTSGameUI && npm test",
     "install-server": "cd Server && npm install",
     "install-client": "cd SimpleRTSGameUI && npm install",
+    "setup": "cd Server && npm run setup",
     "server": "cd Server && node index.js",
     "client": "cd SimpleRTSGameUI && npm start",
     "ui": "cd SimpleRTSGameUI && npm start",

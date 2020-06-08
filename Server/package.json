@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "setup": "cd pico-engine && npm run setup",
+    "start": "cd pico-engine && npm start"
   },
   "keywords": [],
   "author": "",

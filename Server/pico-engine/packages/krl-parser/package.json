@@ -1,0 +1,57 @@
+{
+  "name": "krl-parser",
+  "version": "0.52.3",
+  "description": "Parse KRL source code into an AST",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "files": [
+    "dist/src"
+  ],
+  "scripts": {
+    "prepublish": "npm run build",
+    "start": "ava -w",
+    "test": "ava",
+    "build": "npm run build:ts -s && npm run build:spec -s",
+    "build:ts": "rm -rf dist && tsc",
+    "build:spec": "node specBuilder.js > spec.md"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Picolab/pico-engine.git"
+  },
+  "keywords": [
+    "pico-engine",
+    "krl",
+    "parser"
+  ],
+  "author": "Picolab",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Picolab/pico-engine/issues"
+  },
+  "homepage": "https://github.com/Picolab/pico-engine#readme",
+  "devDependencies": {
+    "ava": "^2.4.0",
+    "ts-node": "^8.4.1",
+    "typescript": "^3.7.2"
+  },
+  "dependencies": {
+    "excerpt-at-line-col": "^1.0.0",
+    "line-column": "^1.0.2"
+  },
+  "ava": {
+    "compileEnhancements": false,
+    "extensions": [
+      "ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "files": [
+      "test/**/*"
+    ],
+    "helpers": [
+      "test/helpers/**/*"
+    ]
+  }
+}

@@ -11,7 +11,8 @@ See our database schemas [here](https://github.com/BYUCS452S2020/Simple-RTS-Game
 1. Clone the repository
 2. Navigate to the root folder
 3. Run `npm install`
-4. Run `npm start`
+4. Run `npm run setup`
+5. Run `npm start`
   * This runs both the server and the client concurrently
   * To run separately use the commands `npm run server` and `npm run client`
   * By default server is on localhost:4000 and client is on localhost:3000
