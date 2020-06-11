@@ -1,4 +1,4 @@
-import { AVATAR_RESULT } from '../actions';
+import { AVATAR_RESULT, LOGIN_RESULT, LOGOUT } from '../actions';
 
 // initialState
 export const avatar = {
@@ -15,6 +15,10 @@ export default function avatarReducer(state = avatar, action) {
         mad: action.mad,
         mocking: action.mocking
       })
+    case LOGIN_RESULT:
+      return avatar;
+    case LOGOUT:
+      return avatar;
     default:
       return state;
   }

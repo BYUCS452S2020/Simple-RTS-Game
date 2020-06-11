@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getAvatar, setAvatar } from '../../actions';
+import { getUser, updateUser } from '../../actions';
 
 
 class EditAvatar extends React.Component {
@@ -115,8 +115,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getAvatar: () => { dispatch(getAvatar()) },
-    setAvatar: (happy, mad, mocking) => { dispatch(setAvatar(happy, mad, mocking)) }
+    getAvatar: () => { dispatch(getUser()) },
+    setAvatar: (happy, mad, mocking) => { dispatch(updateUser({"avatar": {happy, mad, mocking}})) }
   }
 }
 

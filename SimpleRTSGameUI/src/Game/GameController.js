@@ -14,10 +14,10 @@ class GameController extends React.Component {
   }
 
   componentDidMount() {
-    const socket = io("http://localhost:4000");
-    socket.on("serverMsg", data => {
-      console.log(data);
-    })
+    // const socket = io("http://localhost:4000");
+    // socket.on("serverMsg", data => {
+    //   console.log(data);
+    // })
     this.renderLayers(this.state.map.layers);
   }
 
@@ -46,7 +46,7 @@ class GameController extends React.Component {
         let x = this.getPosXFromIndex(i);
         let y = this.getPosYFromIndex(i);
         let img = new Image();
-        img.src = 'http://localhost:4000/' + tile.image;
+        img.src = window.location.origin + '/maps/' + tile.image;
         img.onload = function() {
           canvas.drawImage(
             img,

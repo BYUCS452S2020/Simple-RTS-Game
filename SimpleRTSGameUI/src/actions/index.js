@@ -1,5 +1,8 @@
 import axios from 'axios';
 import history from '../history';
+import ServiceClient from '../api';
+
+const sc = new ServiceClient();
 
 export const LOGIN_RESULT = 'LOGIN_RESULT';
 export function loginResult(userId, isAuthenticated) {
@@ -12,10 +15,10 @@ export function loginResult(userId, isAuthenticated) {
 export function login(username, password) {
   return async (dispatch) => {
     try {
-      let response = await axios.post("http://localhost:4000/login", { username, password })
+      let response = await sc.login(username, password);
       if (response.status === 200) {
         // TODO: ADD AUTH TOKENS
-        dispatch(loginResult(response.data.userId, true));
+        dispatch(loginResult(username, true));
         console.log("navigating to home page");
         history.push('/home');
       }
@@ -32,7 +35,7 @@ export function login(username, password) {
 export function register(user) {
   return async (dispatch) => {
     try {
-      let response = await axios.post("http://localhost:4000/register", {
+      let response = await sc.register({
         username: user.username,
         password: user.password,
         email: user.email,
@@ -41,7 +44,8 @@ export function register(user) {
       })
       if (response.status === 200) {
         // TODO: ADD AUTH TOKENS
-        dispatch(loginResult(response.data.userId, true));
+        console.log(response);
+        dispatch(loginResult(user.username, true));
         history.push('/home');
       }
       else {
@@ -109,14 +113,17 @@ export const AVAILABLE_GAMES = "AVAILABLE_GAMES";
 function availableGames(result) {
   return {
     type: AVAILABLE_GAMES,
-    games: result.data
+    games: result
   }
 }
 export function fetchAvailableGames() {
   return async (dispatch) => {
-    let response = await axios('http://localhost:4000/games/available');
-    if (response.status === 200) {
+    try {
+      let response = await sc.getCurrentGames();
       dispatch(availableGames(response));
+    }
+    catch (e) {
+      dispatch(handleError(e));
     }
   }
 }
@@ -124,15 +131,62 @@ export const GAME_LIST = "GAME_LIST";
 function gameListResult(result) {
   return {
     type: GAME_LIST,
-    games: result.data
+    games: result
   }
 }
 export function fetchGames() {
+  // return async (dispatch) => {
+    // let response = await axios(window.location.origin + '/maps/games');
+    // console.log(response);
+    // if (response.status === 200) {
+    //   dispatch(gameListResult(response));
+    // }
+  // }
+  return gameListResult([
+    { id: 1, name: 'level1', preview: window.location.origin + '/maps/level1.png', map: window.location.origin + '/maps/level1.json', description: "Simple 2 player map", maxPlayers: 2 },
+    { id: 2, name: 'level2', preview: window.location.origin + '/maps/level2.png', map: window.location.origin + '/maps/level2.json', description: "Simple 4 player map", maxPlayers: 4 },
+    { id: 3, name: 'level3', preview: window.location.origin + '/maps/level3.png', map: window.location.origin + '/maps/level3.json', description: "Simple 3 player map", maxPlayers: 3 }
+  ]);
+}
+
+export const CURRENT_GAME = "CURRENT_GAME";
+function currentGameResult(game) {
+  return {
+    type: CURRENT_GAME,
+    game
+  }
+}
+
+export function getMyGame() {
+  return async (dispatch, getState) => {
+    try {
+      let response = await sc.getMyGame();
+      dispatch(currentGameResult(response));
+    }
+    catch (e) {
+      dispatch(handleError(e));
+    }
+  }
+}
+
+export function createGame(game) {
   return async (dispatch) => {
-    let response = await axios('http://localhost:4000/games');
-    console.log(response);
-    if (response.status === 200) {
-      dispatch(gameListResult(response));
+    try {
+      let response = await sc.createGame(game);
+    }
+    catch (e) {
+      dispatch(handleError(e))
+    }
+  }
+}
+
+export function joinGame(eci) {
+  return async (dispatch) => {
+    try {
+      let response = await sc.joinGame(eci);
+    }
+    catch (e) {
+      dispatch(handleError(e));
     }
   }
 }
@@ -149,39 +203,39 @@ export function avatarResult(happy, mad, mocking) {
 
 export function getAvatar() {
   return async (dispatch, getState) => {
-    try {
-      let userId = getState().auth.userId;
-      let response = await axios.get("http://localhost:4000/avatar/"+userId)
-      if (response.status === 200) {
-        dispatch(avatarResult(response.data.happy, response.data.mad, response.data.mocking));
-      }
-      else {
-        handleError(response);
-      }
-    }
-    catch (e) {
-      console.log(e);
-      handleError(e);
-    }
+    // try {
+    //   let userId = getState().auth.userId;
+    //   let response = await axios.get("http://localhost:4000/avatar/"+userId)
+    //   if (response.status === 200) {
+    //     dispatch(avatarResult(response.data.happy, response.data.mad, response.data.mocking));
+    //   }
+    //   else {
+    //     handleError(response);
+    //   }
+    // }
+    // catch (e) {
+    //   console.log(e);
+    //   handleError(e);
+    // }
   }
 }
 
 export function setAvatar(happy, mad, mocking) {
   return async (dispatch, getState) => {
-    try {
-      let userId = getState().auth.userId;
-      let response = await axios.post("http://localhost:4000/avatar", {userId, happy, mad, mocking})
-      if (response.status === 200) {
-        dispatch(avatarResult(happy, mad, mocking));
-      }
-      else {
-        handleError(response);
-      }
-    }
-    catch (e) {
-      console.log(e);
-      handleError(e);
-    }
+    // try {
+    //   let userId = getState().auth.userId;
+    //   let response = await axios.post("http://localhost:4000/avatar", {userId, happy, mad, mocking})
+    //   if (response.status === 200) {
+    //     dispatch(avatarResult(happy, mad, mocking));
+    //   }
+    //   else {
+    //     handleError(response);
+    //   }
+    // }
+    // catch (e) {
+    //   console.log(e);
+    //   handleError(e);
+    // }
   }
 }
 
@@ -199,14 +253,9 @@ export function userResult(username, firstName, lastName, email) {
 export function getUser() {
   return async (dispatch, getState) => {
     try {
-      let userId = getState().auth.userId;
-      let response = await axios.get("http://localhost:4000/user/"+userId)
-      if (response.status === 200) {
-        dispatch(userResult(response.data.username, response.data.first_name, response.data.last_name, response.data.email));
-      }
-      else {
-        handleError(response);
-      }
+      let response = await sc.getUserInfo()
+      dispatch(userResult(response.username, response.firstName, response.lastName, response.email));
+      dispatch(avatarResult(response.avatar.happy, response.avatar.mad, response.avatar.mocking));
     }
     catch(e) {
       console.log(e);
@@ -215,14 +264,17 @@ export function getUser() {
   }
 }
 
-export function updateUser(firstName, lastName, email) {
+export function updateUser(options) {
   return async (dispatch, getState) => {
     try {
       let userId = getState().auth.userId;
       let username = getState().user.username;
-      let response = await axios.post("http://localhost:4000/user", {userId, firstName, lastName, email})
+      let response = await sc.updateUser(options);
       if (response.status === 200) {
-        dispatch(userResult(username, firstName, lastName, email));
+        let user = response.user
+        console.log(user);
+        dispatch(userResult(user.username, user.firstName, user.lastName, user.email));
+        dispatch(avatarResult(user.avatar.happy, user.avatar.mad, user.avatar.mocking));
       }
       else {
         handleError(response);

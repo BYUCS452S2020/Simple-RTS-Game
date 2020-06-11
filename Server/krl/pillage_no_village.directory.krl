@@ -120,7 +120,7 @@ ruleset pillage_no_village.directory {
       loginResult = exists => loginResult(username, password)
         | {"name": "Unauthorized", "options": { "status": 401, "message": "Invalid username or password"}}
     }
-    send_directive(loginResult{"name"}, loginResult{"options"})
+    send_directive(loginResult{"name"}, loginResult{"options"}.set(["eci"], ent:users{username}))
   }
 
   rule create_game {

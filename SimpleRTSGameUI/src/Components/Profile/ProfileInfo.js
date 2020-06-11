@@ -52,7 +52,12 @@ class ProfileInfo extends React.Component {
 
   saveProfileInfo() {
     let { firstNameField, lastNameField, emailField } = this.state;
-    this.props.updateUser(firstNameField, lastNameField, emailField);
+    let body = {
+      firstName: firstNameField,
+      lastName: lastNameField,
+      email: emailField
+    }
+    this.props.updateUser(body);
 
     this.setState({
       readonly: true

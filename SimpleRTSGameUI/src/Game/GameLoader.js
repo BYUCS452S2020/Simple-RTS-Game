@@ -22,7 +22,7 @@ class GameLoader extends React.Component {
   }
 
   loadMap = () => {
-    fetch("http://localhost:4000/maps/" + this.mapId)
+    fetch(window.location.origin + '/maps/level' + this.mapId + '.json')
       .then(response => response.json())
       .then(data => {
         // console.log(data);
@@ -32,7 +32,7 @@ class GameLoader extends React.Component {
   }
 
   loadTiles = () => {
-    fetch(`http://localhost:4000/tiles`)
+    fetch(window.location.origin + '/maps/AllTiles.json')
       .then(response => response.json())
       .then(data => {
         // console.log(data);

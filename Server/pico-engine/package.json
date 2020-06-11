@@ -9,7 +9,7 @@
     "bootstrap": "lerna bootstrap --hoist --no-ci --nohoist=browserify",
     "setup": "npm i --no-package-lock && npm run bootstrap",
     "publish": "npm run build && lerna publish",
-    "start": "cd packages/pico-engine && PORT=4000 npm start",
+    "start": "cd packages/pico-engine && npm start",
     "test": "lerna run test",
     "build": "cd packages/krl-parser && npm run build && cd ../krl-editor && npm run build && cd ../pico-engine-browser && npm run build"
   },

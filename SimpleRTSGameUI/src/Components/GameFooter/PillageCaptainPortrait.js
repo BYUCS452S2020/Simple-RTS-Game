@@ -25,6 +25,19 @@ class PillageCaptainPortrait extends React.Component {
     this.mocking = setInterval(()=>{this.changeReaction("mocking")}, 7000);
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps !== this.props) {
+      this.setState({
+        portraitImage: {
+          "happy": this.props.happy,
+          "angry": this.props.mad,
+          "mocking": this.props.mocking
+        },
+        currentPortrait: this.props.happy
+      })
+    }
+  }
+
   componentWillUnmount() {
     clearInterval(this.happy);
     clearInterval(this.angry);

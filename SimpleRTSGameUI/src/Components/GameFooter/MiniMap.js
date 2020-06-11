@@ -13,7 +13,7 @@ class MiniMap extends React.Component {
   render() {
     return (
       <div className="minimap-container">
-        <img src={"http://localhost:4000/maps/"+this.mapId+"/preview"} alt="smiley face" className='minimap-background'/>
+        <img src={window.location.origin + '/maps/level' + this.mapId + ".png"} alt="smiley face" className='minimap-background'/>
       </div>
     )
   }

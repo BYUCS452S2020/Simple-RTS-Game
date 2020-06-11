@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchGames } from '../../actions';
+import { fetchAvailableGames, fetchGames, getMyGame, createGame, joinGame, getUser } from '../../actions';
 import Jumbotron from 'react-bootstrap/Jumbotron';
 import Tab from 'react-bootstrap/Tab';
 import Table from 'react-bootstrap/Table'
@@ -14,25 +14,98 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selected: {}
+      selected: {},
+      gameToJoin: {},
+      retries: 0
+    }
+    this.createGame = this.createGame.bind(this);
+    this.joinGame = this.joinGame.bind(this);
+    this.checkGame = this.checkGame.bind(this);
+    this.retryPolicy = null;
+  }
+
+  componentDidMount() {
+    this.props.fetchAvailableGames();
+    this.props.fetchGames();
+    this.props.getMyGame();
+    this.props.getUser();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.myGame) {
+      console.log("YOU HAVE A GAME!");
+      clearInterval(this.retryPolicy);
+      history.push('/game/' + this.props.myGame.id)
     }
   }
-  componentDidMount(){
-    this.props.fetchGames();
+
+  checkGame() {
+    if (this.state.retries < 10) {
+      this.props.getMyGame();
+      this.setState({ retries: this.state.retries++ })
+    }
   }
+
+  createGame() {
+    this.props.createGame(this.state.selected);
+    this.retryPolicy = setInterval(this.checkGame, 1000);
+  }
+
+  joinGame() {
+    this.props.joinGame(this.state.gameToJoin.eci);
+    this.retryPolicy = setInterval(this.checkGame, 1000);
+  }
+
+  renderAvailableGames() {
+    const games = this.props.availableGames;
+    if (games && games !== {}) {
+      let tbody = [];
+      for (const name in games) {
+        tbody.push(
+          <tr key={name} onClick={() => this.setState({ gameToJoin: games[name] })}>
+            <td>
+              {games[name].id}
+            </td>
+            <td>
+              {name}
+            </td>
+            <td>
+              {games[name].maxPlayers}
+            </td>
+          </tr>
+        );
+      }
+      return tbody;
+    }
+    else {
+      return <td></td>
+    }
+  }
+
   renderPreview() {
     if (this.state.selected.preview) {
       return (
         <div>
           <h3>{this.state.selected.name}</h3>
-          <img src={'http://' + this.state.selected.preview} style={{ width: "100%"}} alt="preview"/>
+          <img src={this.state.selected.preview} style={{ width: "100%"}} alt="preview"/>
+        </div>
+      );
+    }
+    else if (this.state.gameToJoin.id) {
+      return (
+        <div>
+          <h3>Map {this.state.gameToJoin.id}</h3>
+          <img
+            src={window.location.origin + "/maps/level" + this.state.gameToJoin.id + ".png"}
+            style={{ width: "100%"}} alt="preview"
+          />
         </div>
       );
     }
 
   }
   renderGameList() {
-    if (this.props.games.length > 0) {
+    if (this.props.games && this.props.games.length > 0) {
       return this.props.games.map((game, i) => {
         return (
           <tr key={i} onClick={() => this.setState({ selected: game })}>
@@ -60,7 +133,7 @@ class Home extends React.Component {
                   <Nav.Link eventKey="join" onSelect={() => this.setState({ selected: {} })}>Join Game</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                  <Nav.Link eventKey="create">Create Game</Nav.Link>
+                  <Nav.Link eventKey="create" onSelect={() => this.setState({ gameToJoin: {} })}>Create Game</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
                   <hr />
@@ -71,7 +144,24 @@ class Home extends React.Component {
             <Col xs={9}>
               <Tab.Content>
                 <Tab.Pane eventKey="join">
-                  Currently no games available to join
+                  <Table striped hover responsive>
+                    <thead>
+                      <tr>
+                        <th>Map ID</th>
+                        <th>Name</th>
+                        <th>Max Players</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {this.renderAvailableGames()}
+                    </tbody>
+                  </Table>
+                  <Button
+                    variant="success"
+                    disabled={!this.state.gameToJoin}
+                    onClick={this.joinGame}>
+                    Join Game
+                  </Button>
                 </Tab.Pane>
                 <Tab.Pane eventKey="create">
                   <Table striped hover responsive>
@@ -89,7 +179,7 @@ class Home extends React.Component {
                   <Button
                     variant="success"
                     disabled={!this.state.selected.id}
-                    onClick={() => history.push('/game/' + this.state.selected.id)}>
+                    onClick={this.createGame}>
                     Create Game
                   </Button>
                 </Tab.Pane>
@@ -105,13 +195,19 @@ class Home extends React.Component {
 const mapStateToProps = (state) => {
   return {
     games: state.games.list,
-    availableGames: state.games.available
+    availableGames: state.games.available,
+    myGame: state.games.current
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchGames: () => { dispatch(fetchGames()) }
+    fetchAvailableGames: () => { dispatch(fetchAvailableGames()) },
+    fetchGames: () => { dispatch(fetchGames()) },
+    getMyGame: () => { dispatch(getMyGame()) },
+    joinGame: (eci) => { dispatch(joinGame(eci)) },
+    createGame: (game) => { dispatch(createGame(game)) },
+    getUser: () => { dispatch(getUser()) }
   }
 }
 

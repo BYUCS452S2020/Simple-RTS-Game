@@ -1,4 +1,4 @@
-import { USER_RESULT } from '../actions';
+import { USER_RESULT, LOGOUT } from '../actions';
 
 // initialState
 export const user = {
@@ -17,6 +17,8 @@ export default function userReducer(state = user, action) {
         lastName: action.lastName,
         email: action.email
       })
+    case LOGOUT:
+      return user;
     default:
       return state;
   }
