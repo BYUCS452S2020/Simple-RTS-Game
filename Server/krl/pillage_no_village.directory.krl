@@ -128,10 +128,11 @@ ruleset pillage_no_village.directory {
     pre {
       player_num = event:attrs{"player_num"}
       host = event:attrs{"host"}
+      id = event:attrs{"id"}
       start = time:now()
       allowed = ent:games{host + " game"}.isnull()
     }
-    if player_num && host && allowed then
+    if id && player_num && host && allowed then
     send_directive("Game started by " + host + " at " + start)
     fired {
       raise wrangler event "new_child_request" attributes {
@@ -140,15 +141,21 @@ ruleset pillage_no_village.directory {
         "host": host,
         "player_num": player_num,
         "start_time": start,
-        "user_eci": ent:users{host}
+        "user_eci": ent:users{host},
+        "gameId": id
       }
+      ent:games{host + " game"} := { "id": id, "maxPlayers": player_num }
     }
   }
 
   rule game_created {
     select when wrangler new_child_created where rids >< "pillage_no_village.game"
+    pre {
+      name = event:attrs{"name"}
+      game = ent:games{name}.set(["eci"], event:attrs{"eci"})
+    }
     fired {
-      ent:games{event:attrs{"name"}} := event:attrs{"eci"}
+      ent:games{name} := game
     }
   }
 
@@ -167,7 +174,7 @@ ruleset pillage_no_village.directory {
   }
 
   rule game_deleted {
-    select when wrangler child_deleted where ent:games.values() >< event:attrs{"eci"}
+    select when wrangler child_deleted where ent:games{event:attrs{"name"}}{"eci"} == event:attrs{"eci"}
     pre {
       game = event:attrs{"name"}
       test = ent:games.delete(game).klog("test")

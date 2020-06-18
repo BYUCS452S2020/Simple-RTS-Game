@@ -19,7 +19,8 @@ ruleset pillage_no_village.game {
       {
         "host": ent:host,
         "maxPlayers": ent:max_players,
-        "players": ent:players
+        "players": ent:players,
+        "id": ent:id
       }
     }
   }
@@ -39,6 +40,7 @@ ruleset pillage_no_village.game {
       ent:players := []
       ent:max_players := event:attrs{"player_num"}
       ent:host := event:attrs{"host"}
+      ent:id := event:attrs{"gameId"}
     }
   }
 
